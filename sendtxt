@@ -1,0 +1,63 @@
+#!/usr/bin/python
+"""
+sendtxt: This is a python script to send text messages to a cell phone
+         using google mail(gmail) as your transport agent.  This script
+         was written in response to ISP blocking port 25 smtp access to
+         most remote email servers.
+""
+import sys
+sys.path.append('/usr/lib/python2.7/site-packages/gmail')
+from gmail import *
+import optparse
+
+
+def main():
+
+    """Read the msaages from the commandline"""
+
+    if len(sys.argv) > 1:
+       message = sys.argv[1]
+    else:
+       print "You did not enter a message"
+       sys.exit()
+
+    parser = optparse.OptionParser()
+    """Setup the command line arguments for gmail and source destination details"""
+    parser.add_option('-a', '--address', help='Destination sms address', dest="address")
+    parser.add_option('-s', '--subject', help='Subject', dest="subject")
+    parser.add_option('-u', '--gmailuser', help='GMail user name', dest="guser")
+    parser.add_option('-p', '--gmailpass', help='GMail user pass', dest="gpass")
+
+    (opts, args) = parser.parse_args()
+
+    if len(args) != 1:
+       parser.error("Incorrect number of arguments: see -h or --help for help")
+       exit
+
+    error_flag = 0
+    missing_item = []
+
+    if not opts.address:
+       error_flag = 1
+       missing_item.append('address')
+    if not opts.subject:
+       error_flag = 1
+       missing_item.append('subject')
+    if not opts.guser:
+       error_flag = 1
+       missing_item.append('guser')
+    if not opts.gpass:
+       error_flag = 1
+       missing_item.append('gpass')
+
+    if error_flag == 1:
+       print ("You are missing something: " '[%s]' % missing_item)
+       sys.exit()
+
+    gmail = GMail(opts.guser, opts.gpass)
+    msg = Message(opts.subject,to=opts.address,text=message)
+    gmail.send(msg)
+
+
+if __name__ == "__main__":
+    main()
