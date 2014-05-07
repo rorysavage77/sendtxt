@@ -10,7 +10,6 @@ sys.path.append('/usr/lib/python2.7/site-packages/gmail')
 from gmail import *
 import optparse
 
-
 def main():
 
     """Read the msaages from the commandline"""
@@ -18,7 +17,7 @@ def main():
     if len(sys.argv) > 1:
        message = sys.argv[1]
     else:
-       print "You did not enter a message, nor options.  Please -h or --help for help."
+       print "You did not enter a message nor arguments.  Please -h or --help for help."
        sys.exit()
 
     parser = optparse.OptionParser()
@@ -27,6 +26,28 @@ def main():
     parser.add_option('-s', '--subject', help='Subject', dest="subject")
     parser.add_option('-u', '--gmailuser', help='GMail user name', dest="guser")
     parser.add_option('-p', '--gmailpass', help='GMail user pass', dest="gpass")
+
+    help_text = """
+    This is the help instructions for: %prog.
+
+    SYNOPSIS
+
+       sendtxt [MESSAGE] [ARGUMENTS]
+
+    DESCRIPTION
+
+       -a, --address    Destination sms address
+       -s, --subject    Subject
+       -u, --gmailuser  Your GMail User Account
+       -p, --gmailpass  Youf GMail User Password
+
+    EXAMPLE
+
+        sendtxt "message" --address 4047654321@vtext.com --subject textmsg  --gmailuser joe.smith@gmail.com --gmailpass changeme
+
+    """
+    parser = optparse.OptionParser(usage=help_text, version="%prog 1.0 beta")
+    (options, args) = parser.parse_args()
 
     (opts, args) = parser.parse_args()
 
@@ -57,7 +78,6 @@ def main():
     gmail = GMail(opts.guser, opts.gpass)
     msg = Message(opts.subject,to=opts.address,text=message)
     gmail.send(msg)
-
 
 if __name__ == "__main__":
     main()
