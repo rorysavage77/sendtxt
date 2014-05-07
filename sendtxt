@@ -18,7 +18,7 @@ def main():
     if len(sys.argv) > 1:
        message = sys.argv[1]
     else:
-       print "You did not enter a message"
+       print "You did not enter a message, nor options.  Please -h or --help for help."
        sys.exit()
 
     parser = optparse.OptionParser()
