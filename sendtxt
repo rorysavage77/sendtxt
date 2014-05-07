@@ -4,7 +4,7 @@ sendtxt: This is a python script to send text messages to a cell phone
          using google mail(gmail) as your transport agent.  This script
          was written in response to ISP blocking port 25 smtp access to
          most remote email servers.
-""
+"""
 import sys
 sys.path.append('/usr/lib/python2.7/site-packages/gmail')
 from gmail import *
